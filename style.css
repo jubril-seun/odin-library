@@ -114,12 +114,20 @@ header button:active {
 .card-top-flex {
     align-self: stretch;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 }
 
+.icon-grp {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
 .card-top-flex svg {
-    width: 36px;
+    width: 26px;
     transition: 80ms;
 }
 
@@ -183,9 +191,9 @@ header button:active {
 }
 
 .read {
-    background-color: var(--green);
+    background-color: var(--black);
     color: var(--white);
-    box-shadow: 3px 3px 0px 0 var(--black);
+    box-shadow: 3px 3px 0px 0 var(--white);
 }
 
 .not-read {
