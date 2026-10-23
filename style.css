@@ -64,10 +64,10 @@ header {
 
 header button {
    align-self: flex-start;
-   font-size: 20px;
+   font-size: clamp(.5rem, 5vw, 1.5rem);
    font-weight: 600;
    text-transform: uppercase;
-   padding: 24px 36px;
+   padding: clamp(.5rem, 5vw, 1.5rem) clamp(.5rem, 5vw, 1.5rem);;
    transform: rotate(4deg);
    background-color: var(--pink);
    border: 3px solid var(--black);
@@ -99,7 +99,6 @@ header button:active {
     align-items: flex-start;
     justify-content: space-between;
     gap: 24px;
-    background-color: var(--yellow);
     padding: 24px;
     border: 3px solid var(--black);
     box-shadow: 6px 6px 0px 0 var(--black);
@@ -112,7 +111,33 @@ header button:active {
     box-shadow: 3px 3px 0px 0px var(--black);
 }
 
-.card-container > p {
+.card-top-flex {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-top-flex svg {
+    width: 36px;
+    transition: 80ms;
+}
+
+.card-top-flex svg:hover {
+    scale: 105%;
+    transform: translateY(-5px) rotate(-10deg);
+}
+
+.card-top-flex svg:active {
+    scale: 98%;
+    transform: translateY(-5px) rotate(-10deg);
+}
+
+.card-top-flex svg path {
+    fill: var(--black);
+}
+
+.card-top-flex > p {
    color: var(--black);
    background-color: var(--white);
    border: 3px solid var(--black);
@@ -178,7 +203,7 @@ header button:active {
     box-shadow: 0px 0px 0px 0 var(--black);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 925px) {
   header { 
     flex-direction: column; 
     justify-self: start;
