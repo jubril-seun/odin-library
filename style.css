@@ -212,6 +212,114 @@ header button:active {
     box-shadow: 0px 0px 0px 0 var(--black);
 }
 
+.book-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    width: auto;
+    height: max-content;
+    padding: 24px;
+    background-color: var(--yellow);
+}
+
+dialog {
+    border: 2px solid var(--black);
+    box-shadow: 8px 8px 0px 0 var(--black);
+    transform: rotate(-2deg);
+}
+
+.book-form h2 {
+    text-transform: uppercase;
+    font-size: 32px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-field input {
+   font-size: 12px;
+   font-weight: 600;
+   padding: 6px 10px;
+   background-color: var(--white);
+   border: 2px solid var(--black);
+   box-shadow: 2px 2px 0px 0 var(--black);
+}
+
+.form-field input:focus {
+    outline: none;
+}
+
+.form-field label {
+    font-size: 8px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.input-grp {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.input-grp input {
+    flex: 1;
+}
+
+.input-grp button {
+    font-size: 8px;
+    padding: 6px 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--white);
+    background-color: var(--black);
+    border: 2px solid var(--black);
+    box-shadow: 2px 2px 0px 0 var(--white);
+    cursor: pointer;
+}
+
+.form-btns {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.form-btns button:nth-child(1){
+    font-size: 11px;
+    padding: 8px 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: var(--white);
+    border: 2px solid var(--black);
+    box-shadow: 2px 2px 0px 0 var(--black);
+    cursor: pointer;
+    transition: 80ms;
+}
+
+.form-btns button:nth-child(2) {
+    flex: 1;
+    font-size: 11px;
+    padding: 8px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: var(--pink);
+    border: 2px solid var(--black);
+    box-shadow: 2px 2px 0px 0 var(--black);
+    cursor: pointer;
+    transition: 80ms;
+}
+
+.form-btns button:active {
+    scale: 98%;
+    box-shadow: 1px 1px 0px 0 var(--black);
+    transform: translate(2px, 2px);
+}
+
 @media (max-width: 925px) {
   header { 
     flex-direction: column; 

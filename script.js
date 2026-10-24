@@ -3,7 +3,7 @@ const cardSection = document.querySelector(".cards-section");
 
 const myLibrary = [
     {
-     id: 4334534,
+     id: "4334534",
      author: "Sam Waters",
      title: "The Lost boys",
      pages: 650,
@@ -12,7 +12,7 @@ const myLibrary = [
     },
 
     {
-     id: 4343433434234,
+     id: "4343433434234",
      author: "Micahel Eggs",
      title: "The Found Boys",
      pages: 750,
@@ -21,7 +21,7 @@ const myLibrary = [
     },
 
     {
-     id: 434343343544234,
+     id: "434343343544234",
      author: "Micahel Eggs",
      title: "The Found Boys",
      pages: 750,
@@ -29,6 +29,7 @@ const myLibrary = [
      bgColor: "#B9A4FF"
     }
 ];
+
 
 // console.log(myLibrary);
 
@@ -150,16 +151,14 @@ function updateBooks(){
     });
 }
 
-function deleteBooks(idMatch){
-    // const filteredItem = myLibrary.filter(item => item.id === idMatch);
-    
+function deleteBooks(idMatch){    
     const i = myLibrary.findIndex(item => item.id === idMatch);
 
-    myLibrary.splice(i, 1);
-    updateBooks();
-
+    if(i !== -1){
+       myLibrary.splice(i, 1);
+       updateBooks();
+    }
 }
-// deleteBooks(4343433434234);
 
 // Event Listeners
 
@@ -167,8 +166,7 @@ cardSection.addEventListener('click', (e) => {
     const trash = e.target.closest('.trash-icon');
 
    if (trash){
-    id = Number(trash.dataset.trashId);
-     deleteBooks(id);
+     deleteBooks(trash.dataset.trashId);
    };
 
 })
