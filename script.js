@@ -18,6 +18,15 @@ const myLibrary = [
      pages: 750,
      read: "not-read",
      bgColor: "#B9A4FF"
+    },
+
+    {
+     id: 434343343544234,
+     author: "Micahel Eggs",
+     title: "The Found Boys",
+     pages: 750,
+     read: "not-read",
+     bgColor: "#B9A4FF"
     }
 ];
 
@@ -79,6 +88,8 @@ function randomBgClr(){
 // console.log(Clrs);
 
 function updateBooks(){
+    cardSection.replaceChildren()
+
     myLibrary.forEach((book, index) => {
         const container = document.createElement("div");
         container.classList.add("card-container");
@@ -139,10 +150,27 @@ function updateBooks(){
     });
 }
 
-updateBooks();
+function deleteBooks(idMatch){
+    // const filteredItem = myLibrary.filter(item => item.id === idMatch);
+    
+    const i = myLibrary.findIndex(item => item.id === idMatch);
+
+    myLibrary.splice(i, 1);
+    updateBooks();
+
+}
+// deleteBooks(4343433434234);
 
 // Event Listeners
-// addBtn.addEventListener("click", () => {
-//     addBookToLibrary();
-//     console.log(myLibrary);
-// });
+
+cardSection.addEventListener('click', (e) => {
+    const trash = e.target.closest('.trash-icon');
+
+   if (trash){
+    id = Number(trash.dataset.trashId);
+     deleteBooks(id);
+   };
+
+})
+
+updateBooks();
