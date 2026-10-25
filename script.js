@@ -2,8 +2,13 @@
 const cardSection = document.querySelector(".cards-section");
 const addBookBtn = document.querySelector(".add-book-btn");
 const closeModalBtn = document.getElementById('close-modal');
+
 const modal = document.getElementById("dialog-modal");
 const dialogWrapper = document.querySelector(".dialog-wrapper");
+const modalToggle = document.querySelector(".read-toggle");
+const modalReadTxt = document.querySelector(".modal-read-state");
+
+const form = document.querySelector(".book-form");
 
 const myLibrary = [
     {
@@ -18,7 +23,7 @@ const myLibrary = [
     {
      id: "4343433434234",
      author: "Micahel Eggs",
-     title: "The Found Boys",
+     title: "The Found Boysssssssss",
      pages: 750,
      read: false,
      bgColor: "#B9A4FF"
@@ -38,27 +43,24 @@ const myLibrary = [
 // console.log(myLibrary);
 
 // method to create individual book with random id
-function Book(author, title, pages, read) {
-    if (!new.target) {
-            throw Error("You must use the 'new' operator");
-        };
-    this.id = crypto.randomUUID();
-    this.author = author;
-    this.title = title;
-    this.pages = pages;
-    this.read = read;
-    this.bgColor = "";
-}
+// function Book(author, title, pages, read, bgColor) {
+//     if (!new.target) {
+//             throw Error("You must use the 'new' operator");
+//         };
+//     this.id = crypto.randomUUID();
+//     this.author = author;
+//     this.title = title;
+//     this.pages = pages;
+//     this.read = read;
+//     this.bgColor = randomBgClr();
+// }
 
 // function to add books to the library array
-function addBookToLibrary(){
-    const userAuthor = prompt("Please enter book author: ");
-    const userTitle = prompt("Please enter book title: ");
-    const userPages = prompt("Please enter pages: ");
-    const userRead = prompt("Please enter if read or not: ");
+// function addBookToLibrary(){
+
     
-    myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead));  
-}
+//     myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead));  
+// }
 
 const Clrs = [];
 
@@ -180,8 +182,10 @@ function deleteBooks(idMatch){
     }
 }
 
-// Event Listeners
+// Event Listeners //
 
+
+// Delete Books
 cardSection.addEventListener('click', (e) => {
     const trash = e.target.closest('.trash-icon');
 
@@ -190,10 +194,13 @@ cardSection.addEventListener('click', (e) => {
    };
 })
 
+
+// Add Books Button
 addBookBtn.addEventListener('click', () => {
     modal.showModal();
 })
 
+// Close Modal
 closeModalBtn.addEventListener('click', () => {
     modal.close();
 })
@@ -202,6 +209,32 @@ modal.addEventListener('click', (e) => {
     if(!dialogWrapper.contains(e.target)){
         modal.close();
     }
+})
+
+
+// Toggle modal read state
+modalToggle.addEventListener('change', (e) => {
+
+    if(modalToggle.checked){
+        modalReadTxt.textContent = "read";
+    } else {
+        modalReadTxt.textContent = "not read";
+    }
+})
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    myLibrary.push({
+        id: crypto.randomUUID(),
+        title: fd.get("title"),
+        pages: Number(fd.get("pages")),
+        read: fd.has("read"),
+        bgColor: randomBgClr(),
+    });
+    modal.close();
+    form.reset();
+    updateBooks();
 })
 
 updateBooks();
