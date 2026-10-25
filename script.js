@@ -1,5 +1,9 @@
 
 const cardSection = document.querySelector(".cards-section");
+const addBookBtn = document.querySelector(".add-book-btn");
+const closeModalBtn = document.getElementById('close-modal');
+const modal = document.getElementById("dialog-modal");
+const dialogWrapper = document.querySelector(".dialog-wrapper");
 
 const myLibrary = [
     {
@@ -7,7 +11,7 @@ const myLibrary = [
      author: "Sam Waters",
      title: "The Lost boys",
      pages: 650,
-     read: "read",
+     read: true,
      bgColor: "#FF5CA8"
     },
 
@@ -16,7 +20,7 @@ const myLibrary = [
      author: "Micahel Eggs",
      title: "The Found Boys",
      pages: 750,
-     read: "not-read",
+     read: false,
      bgColor: "#B9A4FF"
     },
 
@@ -25,7 +29,7 @@ const myLibrary = [
      author: "Micahel Eggs",
      title: "The Found Boys",
      pages: 750,
-     read: "not-read",
+     read: true,
      bgColor: "#B9A4FF"
     }
 ];
@@ -86,68 +90,84 @@ function randomBgClr(){
 
 }
 
-// console.log(Clrs);
+function createCard(book){
+    let readText = "";
+    
+    if(book.read){
+        readText = "read";
+    } else {
+        readText = "Not read";
+    }
+
+    const container = document.createElement("div");
+    container.classList.add("card-container");
+    container.setAttribute("id", book.id);
+    container.style.backgroundColor = book.bgColor;
+    cardSection.appendChild(container);
+
+    const crdTop = document.createElement("div");
+    crdTop.classList.add("card-top-flex");
+    container.appendChild(crdTop);
+
+    const pages = document.createElement("p");
+    pages.classList.add("bk-pages")
+    pages.textContent = `${book.pages} pages`;
+    crdTop.appendChild(pages);
+
+    const iconGrp = document.createElement("div");
+    iconGrp.classList.add("icon-grp");
+    crdTop.appendChild(iconGrp);
+
+    const pencilDiv = document.createElement("div");
+    pencilDiv.dataset.editId = book.id;
+    pencilDiv.classList.add("pencil-icon");    
+    
+    const trashDiv = document.createElement("div");
+    trashDiv.dataset.trashId = book.id;
+    trashDiv.classList.add("trash-icon");
+    
+    iconGrp.appendChild(pencilDiv);
+    iconGrp.appendChild(trashDiv);
+    
+    const trashSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>trash-can-outline</title><path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" /></svg>`;
+    const pencilSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pencil-outline</title><path d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" /></svg>`;
+
+    pencilDiv.insertAdjacentHTML("beforeend", pencilSvgCode);       
+    trashDiv.insertAdjacentHTML("beforeend", trashSvgCode);
+    
+    const crdBottom = document.createElement("div");
+    crdBottom.classList.add("card-bottom-flex");
+    container.appendChild(crdBottom);
+
+    const title = document.createElement("p");
+    title.classList.add("bk-title")
+    title.textContent = book.title;
+    crdBottom.appendChild(title);
+
+    const author = document.createElement("p");
+    author.classList.add("bk-author")
+    author.textContent = book.author;
+    crdBottom.appendChild(author);
+
+    const readStatus = document.createElement("div");
+    readStatus.classList.add("read-status");
+    crdBottom.appendChild(readStatus);
+
+    const toggleInput = document.createElement("input");
+    toggleInput.type = "checkbox";
+    toggleInput.classList.add("read-toggle");
+    readStatus.appendChild(toggleInput);
+
+    const readState = document.createElement("p");
+    readState.textContent = readText;
+    readStatus.appendChild(readState);
+}
 
 function updateBooks(){
-    cardSection.replaceChildren()
+    cardSection.replaceChildren();
 
     myLibrary.forEach((book, index) => {
-        const container = document.createElement("div");
-        container.classList.add("card-container");
-        container.setAttribute("id", book.id);
-        container.style.backgroundColor = book.bgColor;
-        cardSection.appendChild(container);
-
-        const crdTop = document.createElement("div");
-        crdTop.classList.add("card-top-flex");
-        container.appendChild(crdTop);
-
-        const pages = document.createElement("p");
-        pages.classList.add("bk-pages")
-        pages.textContent = `${book.pages} pages`;
-        crdTop.appendChild(pages);
-
-        const iconGrp = document.createElement("div");
-        iconGrp.classList.add("icon-grp");
-        crdTop.appendChild(iconGrp);
-
-        const pencilDiv = document.createElement("div");
-        pencilDiv.dataset.editId = book.id;
-        pencilDiv.classList.add("pencil-icon");    
-        
-        const trashDiv = document.createElement("div");
-        trashDiv.dataset.trashId = book.id;
-        trashDiv.classList.add("trash-icon");
-        
-        iconGrp.appendChild(pencilDiv);
-        iconGrp.appendChild(trashDiv);
-        
-        const trashSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>trash-can-outline</title><path d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z" /></svg>`;
-        const pencilSvgCode = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pencil-outline</title><path d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" /></svg>`;
-    
-        pencilDiv.insertAdjacentHTML("beforeend", pencilSvgCode);       
-        trashDiv.insertAdjacentHTML("beforeend", trashSvgCode);
-        
-        const crdBottom = document.createElement("div");
-        crdBottom.classList.add("card-bottom-flex");
-        container.appendChild(crdBottom);
-
-        const title = document.createElement("p");
-        title.classList.add("bk-title")
-        title.textContent = book.title;
-        crdBottom.appendChild(title);
-
-        const author = document.createElement("p");
-        author.classList.add("bk-author")
-        author.textContent = book.author;
-        crdBottom.appendChild(author);
-
-        const button = document.createElement("button");
-        button.dataset.bookId = book.id;
-        button.classList.add("bk-status-btn");
-        button.classList.add(book.read);
-        button.textContent = book.read;
-        crdBottom.appendChild(button);
+        createCard(book);
     });
 }
 
@@ -168,7 +188,20 @@ cardSection.addEventListener('click', (e) => {
    if (trash){
      deleteBooks(trash.dataset.trashId);
    };
+})
 
+addBookBtn.addEventListener('click', () => {
+    modal.showModal();
+})
+
+closeModalBtn.addEventListener('click', () => {
+    modal.close();
+})
+
+modal.addEventListener('click', (e) => {
+    if(!dialogWrapper.contains(e.target)){
+        modal.close();
+    }
 })
 
 updateBooks();

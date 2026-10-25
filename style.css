@@ -177,39 +177,65 @@ header button:active {
     color: var(--black);
 }
 
-.bk-status-btn {
-   align-self: flex-start;
-   font-size: 12px;
-   font-weight: 600;
-   text-transform: uppercase;
-   flex-shrink: 0;
-   padding: 12px 18px;
-   background-color: var(--pink);
-   border: 3px solid var(--black);
-   box-shadow: 3px 3px 0px 0 var(--black);
-   transition: 80ms;
-   cursor: pointer;
+.read-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
 }
 
-.read {
-    background-color: var(--black);
-    color: var(--white);
-    box-shadow: 3px 3px 0px 0 var(--white);
+.read-status p {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
 }
 
-.not-read {
-    background-color: var(--white);
-    color: var(--black);
+.read-toggle {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    appearance: none;
+    width: 30px;
+    height: 15px;
+    background: var(--white);
+    border: 2px solid var(--black);
+    box-shadow: 1px 1px 0px 0 var(--black);
+    position: relative;
+    cursor: pointer;
+    transition: 80ms;
 }
 
-.bk-status-btn:hover {
-   scale: 104%;
-   box-shadow: 0px 0px 0px 0 var(--black);
+.read-toggle::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 10px;
+    background: var(--black);
+    left: 1px;
+    transition: 80ms;
 }
 
-.bk-status-btn:active {
-    scale: 98%;
-    box-shadow: 0px 0px 0px 0 var(--black);
+.read-toggle:checked {
+    background: var(--black);
+    box-shadow: 1px 1px 0px 0 var(--white);
+}
+
+.read-toggle:checked::before {
+    transform: translateX(12px);
+    background: var(--white);
+}
+
+dialog {
+    width: min(80vw, 350px);
+    border: 2px solid var(--black);
+    box-shadow: 8px 8px 0px 0 var(--black);
+    background-color: var(--yellow);
+    transform: rotate(-2deg);
+    margin: auto;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.479);
 }
 
 .book-form {
@@ -217,16 +243,12 @@ header button:active {
     flex-direction: column;
     justify-content: center;
     gap: 12px;
-    width: auto;
-    height: max-content;
     padding: 24px;
-    background-color: var(--yellow);
+    flex: 1;
 }
 
-dialog {
-    border: 2px solid var(--black);
-    box-shadow: 8px 8px 0px 0 var(--black);
-    transform: rotate(-2deg);
+.book-form .read-status {
+    align-self: flex-start;
 }
 
 .book-form h2 {
@@ -241,12 +263,17 @@ dialog {
 }
 
 .form-field input {
-   font-size: 12px;
-   font-weight: 600;
-   padding: 6px 10px;
-   background-color: var(--white);
-   border: 2px solid var(--black);
-   box-shadow: 2px 2px 0px 0 var(--black);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    background-color: var(--white);
+    border: 2px solid var(--black);
+    box-shadow: 2px 2px 0px 0 var(--black);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 .form-field input:focus {
@@ -260,33 +287,10 @@ dialog {
     letter-spacing: .5px;
 }
 
-.input-grp {
-    display: flex;
-    align-items: stretch;
-    gap: 8px;
-}
-
-.input-grp input {
-    flex: 1;
-}
-
-.input-grp button {
-    font-size: 8px;
-    padding: 6px 24px;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: var(--white);
-    background-color: var(--black);
-    border: 2px solid var(--black);
-    box-shadow: 2px 2px 0px 0 var(--white);
-    cursor: pointer;
-}
-
 .form-btns {
     display: flex;
     flex-direction: row;
     gap: 8px;
-    margin-top: 8px;
 }
 
 .form-btns button:nth-child(1){
