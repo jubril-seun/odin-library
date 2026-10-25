@@ -93,7 +93,7 @@ header button:active {
 }
 
 .card-container {
-    height: 300px;
+    height: min(40vh, 400px);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -197,7 +197,7 @@ header button:active {
     appearance: none;
     width: 30px;
     height: 15px;
-    background: var(--white);
+    background: rgb(200, 198, 198);
     border: 2px solid var(--black);
     box-shadow: 1px 1px 0px 0 var(--black);
     position: relative;
@@ -328,7 +328,6 @@ input[type="number"]::-webkit-inner-spin-button {
   header { 
     flex-direction: column; 
     justify-self: start;
-
     gap: 24px;
 }
  .cards-section {

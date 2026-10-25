@@ -1,66 +1,89 @@
 
 const cardSection = document.querySelector(".cards-section");
 const addBookBtn = document.querySelector(".add-book-btn");
-const closeModalBtn = document.getElementById('close-modal');
 
-const modal = document.getElementById("dialog-modal");
-const dialogWrapper = document.querySelector(".dialog-wrapper");
-const modalToggle = document.querySelector(".read-toggle");
-const modalReadTxt = document.querySelector(".modal-read-state");
+const addCloseBtn = document.getElementById('close-add-modal');
+const editCloseBtn = document.getElementById('close-edit-modal');
 
-const form = document.querySelector(".book-form");
+const modal = document.getElementById("dialog-modal1");
+const modal2 = document.getElementById("dialog-modal2");
+const dialogWrapper = document.getElementById("dialog-wrapper1");
+const dialogWrapper2 = document.getElementById("dialog-wrapper2");
+
+const modalToggle = document.getElementById("modal-toggle1");
+const modalReadTxt = document.getElementById("modal-toggle-text1");
+
+const modalToggle2 = document.getElementById("modal-toggle2");
+const modalReadTxt2 = document.getElementById("modal-toggle-text2");
+
+const addForm = document.getElementById("add-form");
+const editForm = document.getElementById("edit-form");
+
+const editFormAuthor = document.getElementById("edit-form-author");
+const editFormTitle = document.getElementById("edit-form-title");
+const editFormPages = document.getElementById("edit-form-pages");
+
+const tally = document.querySelector(".tally-txt")
 
 const myLibrary = [
-    {
-     id: "4334534",
-     author: "Sam Waters",
-     title: "The Lost boys",
-     pages: 650,
-     read: true,
-     bgColor: "#FF5CA8"
-    },
+    // {
+    //  id: "4334534",
+    //  author: "Sam Waters",
+    //  title: "The Lost boys",
+    //  pages: 650,
+    //  read: true,
+    //  bgColor: "#FF5CA8"
+    // },
 
-    {
-     id: "4343433434234",
-     author: "Micahel Eggs",
-     title: "The Found Boysssssssss",
-     pages: 750,
-     read: false,
-     bgColor: "#B9A4FF"
-    },
+    // {
+    //  id: "4343433434234",
+    //  author: "Micahel Eggs",
+    //  title: "Random Book Title",
+    //  pages: 750,
+    //  read: false,
+    //  bgColor: "#B9A4FF"
+    // },
 
-    {
-     id: "434343343544234",
-     author: "Micahel Eggs",
-     title: "The Found Boys",
-     pages: 750,
-     read: true,
-     bgColor: "#B9A4FF"
-    }
+    // {
+    //  id: "434343343544234",
+    //  author: "Micahel Eggs",
+    //  title: "The Found Boys",
+    //  pages: 750,
+    //  read: true,
+    //  bgColor: "#B9A4FF"
+    // }
 ];
 
+let currentEditId = "";
 
 // console.log(myLibrary);
 
 // method to create individual book with random id
-// function Book(author, title, pages, read, bgColor) {
-//     if (!new.target) {
-//             throw Error("You must use the 'new' operator");
-//         };
-//     this.id = crypto.randomUUID();
-//     this.author = author;
-//     this.title = title;
-//     this.pages = pages;
-//     this.read = read;
-//     this.bgColor = randomBgClr();
-// }
+function Book(author, title, pages, read, bgColor, id) {
+    if (!new.target) {
+            throw Error("You must use the 'new' operator");
+        };
+    
+    this.id = id;
+    this.author = author;
+    this.title = title;
+    this.pages = pages;
+    this.read = read;
+    this.bgColor = bgColor;
+}
 
 // function to add books to the library array
-// function addBookToLibrary(){
+function addBookToLibrary(data){
 
-    
-//     myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead));  
-// }
+    userTitle = data.get("title");
+    userAuthor = data.get("author");
+    userPages = Number(data.get("pages"));
+    userRead = data.has("read");
+    bgColor = randomBgClr();
+    id = crypto.randomUUID();
+
+    myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead, bgColor, id));  
+}
 
 const Clrs = [];
 
@@ -122,7 +145,7 @@ function createCard(book){
 
     const pencilDiv = document.createElement("div");
     pencilDiv.dataset.editId = book.id;
-    pencilDiv.classList.add("pencil-icon");    
+    pencilDiv.classList.add("edit-icon");    
     
     const trashDiv = document.createElement("div");
     trashDiv.dataset.trashId = book.id;
@@ -158,6 +181,8 @@ function createCard(book){
     const toggleInput = document.createElement("input");
     toggleInput.type = "checkbox";
     toggleInput.classList.add("read-toggle");
+    toggleInput.checked = book.read;
+    toggleInput.dataset.toggleId = book.id;
     readStatus.appendChild(toggleInput);
 
     const readState = document.createElement("p");
@@ -179,8 +204,66 @@ function deleteBooks(idMatch){
     if(i !== -1){
        myLibrary.splice(i, 1);
        updateBooks();
+       bookTally();
     }
 }
+
+function updateRead(idMatch, state){
+    const i = myLibrary.findIndex(item => item.id === idMatch);
+
+    myLibrary[i].read = state;
+    updateBooks();
+    bookTally();
+}
+
+function editCard(idMatch){
+    
+    const i = myLibrary.findIndex(item => item.id === idMatch);
+
+      let readText = "";
+    
+    if(myLibrary[i].read){
+        readText = "read";
+    } else {
+        readText = "Not read";
+    }
+
+    editFormAuthor.value = myLibrary[i].author;
+    editFormTitle.value = myLibrary[i].title;
+    editFormPages.value = myLibrary[i].pages;
+    modalToggle2.checked = myLibrary[i].read;
+    modalReadTxt2.textContent = readText;
+    currentEditId = myLibrary[i].id;
+}
+
+function editLibrary(data){
+
+    const i = myLibrary.findIndex(item => item.id === currentEditId);
+
+
+    myLibrary[i].author = data.get("author");
+    myLibrary[i].title = data.get("title");
+    myLibrary[i].pages = data.get("pages");
+    myLibrary[i].read = data.has("read");
+
+    updateBooks();
+    currentEditId = "";
+}
+
+
+function bookTally(){
+    const total = myLibrary.length;
+    const read = myLibrary.filter(item => item.read).length;
+    const remaining = Number(total) - Number(read);
+
+   if(myLibrary.length === 0){
+        tally.textContent = "0 books"
+   } else {
+    tally.textContent = `${total} books · ${read} read · ${remaining} to go`;
+   }
+}
+
+bookTally()
 
 // Event Listeners //
 
@@ -188,10 +271,18 @@ function deleteBooks(idMatch){
 // Delete Books
 cardSection.addEventListener('click', (e) => {
     const trash = e.target.closest('.trash-icon');
+    const read = e.target.closest('.read-toggle');
+    const edit = e.target.closest('.edit-icon');
 
    if (trash){
      deleteBooks(trash.dataset.trashId);
-   };
+   }else if (read){
+     updateRead(read.dataset.toggleId, read.checked);
+   } else if (edit){
+        modal2.showModal();
+        editCard(edit.dataset.editId);
+   }
+
 })
 
 
@@ -201,8 +292,14 @@ addBookBtn.addEventListener('click', () => {
 })
 
 // Close Modal
-closeModalBtn.addEventListener('click', () => {
+addCloseBtn.addEventListener('click', () => {
     modal.close();
+    addForm.reset();
+})
+
+editCloseBtn.addEventListener('click', () => {
+    modal2.close();
+    editForm.reset();
 })
 
 modal.addEventListener('click', (e) => {
@@ -211,6 +308,11 @@ modal.addEventListener('click', (e) => {
     }
 })
 
+modal2.addEventListener('click', (e) => {
+    if(!dialogWrapper2.contains(e.target)){
+        modal2.close();
+    }
+})
 
 // Toggle modal read state
 modalToggle.addEventListener('change', (e) => {
@@ -222,19 +324,37 @@ modalToggle.addEventListener('change', (e) => {
     }
 })
 
-form.addEventListener('submit', (e) => {
+modalToggle2.addEventListener('change', (e) => {
+
+    if(modalToggle2.checked){
+        modalReadTxt2.textContent = "read";
+    } else {
+        modalReadTxt2.textContent = "not read";
+    }
+})
+
+addForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const fd = new FormData(form);
-    myLibrary.push({
-        id: crypto.randomUUID(),
-        title: fd.get("title"),
-        pages: Number(fd.get("pages")),
-        read: fd.has("read"),
-        bgColor: randomBgClr(),
-    });
+    
+    const fd = new FormData(addForm);
+    addBookToLibrary(fd);
+   
     modal.close();
-    form.reset();
+    addForm.reset();
     updateBooks();
+    bookTally()
+})
+
+editForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const fd = new FormData(editForm);
+    editLibrary(fd);
+   
+    modal2.close();
+    editForm.reset();
+    updateBooks();
+    bookTally()
 })
 
 updateBooks();
