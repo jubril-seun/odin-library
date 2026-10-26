@@ -25,34 +25,7 @@ const editFormPages = document.getElementById("edit-form-pages");
 
 const tally = document.querySelector(".tally-txt")
 
-const myLibrary = [
-    // {
-    //  id: "4334534",
-    //  author: "Sam Waters",
-    //  title: "The Lost boys",
-    //  pages: 650,
-    //  read: true,
-    //  bgColor: "#FF5CA8"
-    // },
-
-    // {
-    //  id: "4343433434234",
-    //  author: "Micahel Eggs",
-    //  title: "Random Book Title",
-    //  pages: 750,
-    //  read: false,
-    //  bgColor: "#B9A4FF"
-    // },
-
-    // {
-    //  id: "434343343544234",
-    //  author: "Micahel Eggs",
-    //  title: "The Found Boys",
-    //  pages: 750,
-    //  read: true,
-    //  bgColor: "#B9A4FF"
-    // }
-];
+const myLibrary = [];
 
 let currentEditId = "";
 
@@ -72,17 +45,8 @@ function Book(author, title, pages, read, bgColor, id) {
     this.bgColor = bgColor;
 }
 
-// function to add books to the library array
-function addBookToLibrary(data){
-
-    userTitle = data.get("title");
-    userAuthor = data.get("author");
-    userPages = Number(data.get("pages"));
-    userRead = data.has("read");
-    bgColor = randomBgClr();
-    id = crypto.randomUUID();
-
-    myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead, bgColor, id));  
+Book.prototype.toggleRead = function() {
+    this.read = !this.read;
 }
 
 const Clrs = [];
@@ -113,6 +77,25 @@ function randomBgClr(){
         return color;
     }
 
+}
+
+myLibrary.push(
+    new Book("Suzanne Collins", "The Hunger Games", 374, true, randomBgClr(), "43345kd44534"),
+    new Book("Gillian Flynn", "Gone Girl", 464, false, randomBgClr(), "4343433434234"),
+    new Book("George Orwell", "1984", 328, true, randomBgClr(), "434343343544234")
+);
+
+// function to add books to the library array
+function addBookToLibrary(data){
+
+    const userTitle = data.get("title");
+    const userAuthor = data.get("author");
+    const userPages = Number(data.get("pages"));
+    const userRead = data.has("read");
+    const bgColor = randomBgClr();
+    const id = crypto.randomUUID();
+
+    myLibrary.push(new Book(userAuthor, userTitle, userPages, userRead, bgColor, id));  
 }
 
 function createCard(book){
@@ -208,10 +191,10 @@ function deleteBooks(idMatch){
     }
 }
 
-function updateRead(idMatch, state){
+function updateRead(idMatch){
     const i = myLibrary.findIndex(item => item.id === idMatch);
 
-    myLibrary[i].read = state;
+    myLibrary[i].toggleRead();
     updateBooks();
     bookTally();
 }
@@ -243,10 +226,9 @@ function editLibrary(data){
 
     myLibrary[i].author = data.get("author");
     myLibrary[i].title = data.get("title");
-    myLibrary[i].pages = data.get("pages");
+    myLibrary[i].pages = Number(data.get("pages"));
     myLibrary[i].read = data.has("read");
 
-    updateBooks();
     currentEditId = "";
 }
 
@@ -277,7 +259,7 @@ cardSection.addEventListener('click', (e) => {
    if (trash){
      deleteBooks(trash.dataset.trashId);
    }else if (read){
-     updateRead(read.dataset.toggleId, read.checked);
+     updateRead(read.dataset.toggleId);
    } else if (edit){
         modal2.showModal();
         editCard(edit.dataset.editId);
@@ -295,6 +277,7 @@ addBookBtn.addEventListener('click', () => {
 addCloseBtn.addEventListener('click', () => {
     modal.close();
     addForm.reset();
+    modalReadTxt.textContent = "not read";
 })
 
 editCloseBtn.addEventListener('click', () => {
@@ -340,6 +323,7 @@ addForm.addEventListener('submit', (e) => {
     addBookToLibrary(fd);
    
     modal.close();
+    modalReadTxt.textContent = "not read";
     addForm.reset();
     updateBooks();
     bookTally()
