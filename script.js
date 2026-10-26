@@ -247,7 +247,11 @@ function bookTally(){
             tally.textContent = `Nice! You've read all ${total} books in your library!`
         }
    } else {
-    tally.textContent = `${total} books · ${read} read · ${remaining} to go`;
+    if(total === 1){
+      tally.textContent = `${total} book · ${read} read · ${remaining} to go`;
+    } else {
+      tally.textContent = `${total} books · ${read} read · ${remaining} to go`;
+    }
    }
 }
 
