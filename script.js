@@ -241,7 +241,11 @@ function bookTally(){
    if(myLibrary.length === 0){
         tally.textContent = "0 books"
    } else if (read === total) {
-        tally.textContent = `Nice! You've read all ${total} books in your library!`
+        if(read === 1){
+             tally.textContent = `Nice! You've read the only book in your library!`
+        } else {
+            tally.textContent = `Nice! You've read all ${total} books in your library!`
+        }
    } else {
     tally.textContent = `${total} books · ${read} read · ${remaining} to go`;
    }
