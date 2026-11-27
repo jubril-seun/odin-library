@@ -32,21 +32,20 @@ let currentEditId = "";
 // console.log(myLibrary);
 
 // method to create individual book with random id
-function Book(author, title, pages, read, bgColor, id) {
-    if (!new.target) {
-            throw Error("You must use the 'new' operator");
-        };
-    
-    this.id = id;
-    this.author = author;
-    this.title = title;
-    this.pages = pages;
-    this.read = read;
-    this.bgColor = bgColor;
-}
+class Book {
+    constructor(author, title, pages, read, bgColor, id){
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.pages = pages;
+        this.read = read;
+        this.bgColor = bgColor;
+    }
 
-Book.prototype.toggleRead = function() {
-    this.read = !this.read;
+    toggleRead() {
+         this.read = !this.read;
+    }
+
 }
 
 const Clrs = [];
